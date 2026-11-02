@@ -1,25 +1,17 @@
 <!DOCTYPE html>
 <!--
   FIRST 100 — Newcomer Navigator Program website
+  Founder & Organizer: Ritik Nayyar
   ------------------------------------------------
-  BEFORE YOU PUBLISH, DO THESE THREE THINGS:
-  1. Search this file for "REPLACE-WITH-YOUR-EMAIL" and swap in the address
-     where sign-up form submissions should land. This site uses FormSubmit
-     (formsubmit.co), a free service with no account needed. The FIRST time
-     someone submits the form, FormSubmit will email that address a one-time
-     confirmation link — click it, or every submission after will be silently
-     dropped.
-  2. Search for "REPLACE-WITH-YOUR-PHONE" and "REPLACE-WITH-YOUR-ORG-NAME"
-     and fill in real contact info (it appears in a few places: the top
-     utility bar, the trust section, and the footer).
-  3. Read the trust section (search "trust_headline") and the privacy line
-     on the form. Have someone on your team confirm those statements match
-     your program's actual policies before this goes live.
-
-  Also: the Spanish, Portuguese, Haitian Creole, Chinese, and Vietnamese
-  translations were machine-drafted, not written by native-speaking staff.
-  Have a fluent speaker review them, especially anything touching legal or
-  immigration status, before this is the version families rely on.
+  REMAINING TO-DO:
+  1. Sign-up form: submissions go to a Google Apps Script web app (SCRIPT_URL
+     near the bottom of this file), which saves each request to a Google Sheet
+     and emails first1000904@gmail.com. If you edit Code.gs, redeploy with
+     Deploy > Manage deployments > Edit > New version.
+  2. Have a fluent speaker review the Spanish, Portuguese, Haitian Creole,
+     Chinese, and Vietnamese translations (machine-drafted), especially the
+     legal / immigration-status text.
+  3. Confirm the "Our Promise" section matches how the program really runs.
 -->
 <html lang="en">
 <head>
@@ -226,6 +218,14 @@
   .check-item input{margin-top:3px;}
   .privacy-note{font-size:.82rem;color:var(--gray);margin-top:4px;}
 
+  .form-msg{max-width:720px;border-radius:8px;padding:18px 22px;margin-bottom:20px;font-size:.95rem;}
+  .form-msg[hidden]{display:none;}
+  .form-msg p{margin:0;}
+  .form-success{background:#E8F3EC;border:1px solid #A9D1B8;border-left:4px solid var(--green);color:#173B2B;}
+  .form-success strong{display:block;font-family:var(--display);font-size:1.1rem;margin-bottom:.3em;}
+  .form-error{background:#FDECEC;border:1px solid #E8B4B4;border-left:4px solid #B5413A;color:#6B2420;}
+  button.btn[disabled]{opacity:.65;cursor:wait;}
+
   /* ---------- Footer ---------- */
   footer{border-top:1px solid var(--line);padding:36px 0;background:var(--cream);}
   footer .foot-grid{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;}
@@ -251,7 +251,7 @@
 
 <div class="utility-bar">
   <div class="container utility-row">
-    <div class="utility-contact"><span data-i18n="call_label">Call us:</span> <a href="tel:REPLACE-WITH-YOUR-PHONE">REPLACE-WITH-YOUR-PHONE</a></div>
+    <div class="utility-contact"><span data-i18n="call_label">Call us:</span> <a href="tel:+17817209206">781-720-9206</a></div>
     <div class="lang-select">
       <button type="button" id="langToggle" aria-haspopup="true" aria-expanded="false">
         <span id="langCurrent">English</span><span class="chev"></span>
@@ -523,7 +523,8 @@
       </div>
       <div class="trust-side">
         <p data-i18n="trust_phone_cta">Prefer to talk? Call or text us:</p>
-        <div class="num">REPLACE-WITH-YOUR-PHONE</div>
+        <div class="num"><a href="tel:+17817209206" style="color:inherit;text-decoration:none">781-720-9206</a></div>
+        <p class="founder-line" style="margin-top:14px;font-size:.82rem;color:#93A0B8">Founder &amp; Organizer: Ritik Nayyar</p>
       </div>
     </div>
   </section>
@@ -537,7 +538,15 @@
         <p data-i18n="signup_sub">We'll match you with a navigator within a few days. No document uploads, no status questions — just how to reach you and what you need.</p>
       </div>
 
-      <form class="intake" action="https://formsubmit.co/REPLACE-WITH-YOUR-EMAIL" method="POST">
+      <div id="formSuccess" class="form-msg form-success" role="status" hidden>
+        <strong data-i18n="form_success_title">Thank you — we got your request.</strong>
+        <p data-i18n="form_success_body">A navigator will contact you soon. If it's urgent, call 781-720-9206 or dial 211.</p>
+      </div>
+      <div id="formError" class="form-msg form-error" role="alert" hidden>
+        <p data-i18n="form_error">Something went wrong and we're not sure your request went through. Please call or text 781-720-9206 so we can help directly.</p>
+      </div>
+
+      <form class="intake" action="https://formsubmit.co/first1000904@gmail.com" method="POST">
         <input type="hidden" name="_subject" value="New First 100 sign-up">
         <input type="hidden" name="_template" value="table">
         <input type="hidden" name="_honey" style="display:none">
@@ -606,7 +615,7 @@
       <p data-i18n="footer_languages">This site is offered in English, Español, Português, Kreyòl Ayisyen, 中文, and Tiếng Việt.</p>
     </div>
     <div>
-      <p>REPLACE-WITH-YOUR-ORG-NAME<br>REPLACE-WITH-YOUR-PHONE<br>REPLACE-WITH-YOUR-EMAIL</p>
+      <p><strong>First 100 Newcomer Navigator Program</strong><br>Founder &amp; Organizer: Ritik Nayyar<br><a href="tel:+17817209206">781-720-9206</a><br><a href="mailto:first1000904@gmail.com">first1000904@gmail.com</a></p>
     </div>
   </div>
 </footer>
@@ -652,6 +661,7 @@
       form_neighborhood:"Vecindario o código postal (opcional)", form_needs:"¿Con qué necesitas ayuda? (marca todo lo que aplique)",
       form_message:"¿Algo más que quieras contarnos? (opcional)", form_submit:"Enviar",
       form_privacy:"Solo usamos esto para conectarte con un navegador. Nunca vendemos ni compartimos tu información.", form_need_other:"Algo más",
+      form_sending:"Enviando…", form_success_title:"Gracias — recibimos tu solicitud.", form_success_body:"Un navegador se comunicará contigo pronto. Si es urgente, llama al 781-720-9206 o marca 211.", form_error:"Algo salió mal y no estamos seguros de que tu solicitud se haya enviado. Por favor llama o envía un mensaje al 781-720-9206 para ayudarte directamente.",
       footer_disclaimer:"First 100 es un programa de navegadores voluntarios. No somos un bufete de abogados y no brindamos asesoría legal ni representación migratoria.",
       footer_languages:"Este sitio está disponible en inglés, español, portugués, criollo haitiano, chino y vietnamita."
     },
@@ -693,6 +703,7 @@
       form_neighborhood:"Bairro ou CEP (opcional)", form_needs:"Com o que você precisa de ajuda? (marque tudo que se aplica)",
       form_message:"Mais alguma coisa que gostaria de nos contar? (opcional)", form_submit:"Enviar",
       form_privacy:"Usamos isso apenas para conectar você a um navegador. Nunca vendemos nem compartilhamos suas informações.", form_need_other:"Outra coisa",
+      form_sending:"Enviando…", form_success_title:"Obrigado — recebemos seu pedido.", form_success_body:"Um navegador entrará em contato em breve. Se for urgente, ligue para 781-720-9206 ou disque 211.", form_error:"Algo deu errado e não temos certeza de que seu pedido foi enviado. Por favor, ligue ou mande mensagem para 781-720-9206 para que possamos ajudar diretamente.",
       footer_disclaimer:"O First 100 é um programa de navegadores voluntários. Não somos um escritório de advocacia e não oferecemos consultoria jurídica nem representação de imigração.",
       footer_languages:"Este site está disponível em inglês, espanhol, português, crioulo haitiano, chinês e vietnamita."
     },
@@ -734,6 +745,7 @@
       form_neighborhood:"Katye oswa kòd postal (opsyonèl)", form_needs:"Kisa ou bezwen èd avèk? (make tout sa ki aplike)",
       form_message:"Gen lòt bagay ou ta renmen di nou? (opsyonèl)", form_submit:"Voye",
       form_privacy:"Nou sèlman itilize sa a pou konekte w ak yon navigatè. Nou pa janm vann oswa pataje enfòmasyon w.", form_need_other:"Yon lòt bagay",
+      form_sending:"Ap voye…", form_success_title:"Mèsi — nou resevwa demann ou.", form_success_body:"Yon navigatè pral kontakte w talè konsa. Si se ijan, rele 781-720-9206 oswa konpoze 211.", form_error:"Gen yon bagay ki pa mache e nou pa sèten demann ou a pase. Tanpri rele oswa voye mesaj nan 781-720-9206 pou nou ka ede w dirèkteman.",
       footer_disclaimer:"First 100 se yon pwogram navigatè volontè. Nou pa yon biwo avoka e nou pa bay konsèy legal ni reprezantasyon imigrasyon.",
       footer_languages:"Sit sa a disponib an anglè, panyòl, pòtigè, kreyòl ayisyen, chinwa, ak vyetnamyen."
     },
@@ -775,6 +787,7 @@
       form_neighborhood:"社区或邮编（可选）", form_needs:"您需要哪些方面的帮助？（可多选）",
       form_message:"还有什么想告诉我们的吗？（可选）", form_submit:"提交",
       form_privacy:"我们仅使用这些信息为您匹配引导员，绝不会出售或分享您的信息。", form_need_other:"其他",
+      form_sending:"正在发送…", form_success_title:"谢谢——我们已收到您的请求。", form_success_body:"引导员会尽快与您联系。如果情况紧急，请致电 781-720-9206 或拨打 211。", form_error:"出了点问题，我们不确定您的请求是否已发送。请致电或发短信至 781-720-9206，我们将直接为您提供帮助。",
       footer_disclaimer:"First 100 是一个志愿引导员项目。我们不是律师事务所，不提供法律咨询或移民代理服务。",
       footer_languages:"本网站提供英语、西班牙语、葡萄牙语、海地克里奥尔语、中文和越南语版本。"
     },
@@ -816,6 +829,7 @@
       form_neighborhood:"Khu phố hoặc mã zip (không bắt buộc)", form_needs:"Bạn cần giúp đỡ về điều gì? (chọn tất cả các mục phù hợp)",
       form_message:"Bạn có muốn cho chúng tôi biết thêm điều gì không? (không bắt buộc)", form_submit:"Gửi",
       form_privacy:"Chúng tôi chỉ sử dụng thông tin này để ghép bạn với người hướng dẫn. Chúng tôi không bao giờ bán hoặc chia sẻ thông tin của bạn.", form_need_other:"Điều khác",
+      form_sending:"Đang gửi…", form_success_title:"Cảm ơn — chúng tôi đã nhận được yêu cầu của bạn.", form_success_body:"Một người hướng dẫn sẽ sớm liên hệ với bạn. Nếu khẩn cấp, hãy gọi 781-720-9206 hoặc bấm 211.", form_error:"Đã xảy ra lỗi và chúng tôi không chắc yêu cầu của bạn đã được gửi. Vui lòng gọi hoặc nhắn tin đến 781-720-9206 để chúng tôi hỗ trợ trực tiếp.",
       footer_disclaimer:"First 100 là một chương trình hướng dẫn tình nguyện. Chúng tôi không phải là công ty luật và không cung cấp tư vấn pháp lý hay đại diện di trú.",
       footer_languages:"Trang web này có bằng tiếng Anh, Tây Ban Nha, Bồ Đào Nha, Kreyòl Haiti, tiếng Trung, và tiếng Việt."
     }
@@ -890,6 +904,54 @@
       resToggle.setAttribute("aria-expanded","false");
       document.getElementById("resources").scrollIntoView({behavior:"smooth", block:"start"});
     });
+  });
+  // ---------- Sign-up form submission ----------
+  // Paste your Google Apps Script web-app URL below (see Code.gs).
+  // Until you do, the form falls back to FormSubmit so it still works.
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxRmDKDScpFKb06sQtoM16XdsPvCfqu75LrQtHwYUzw0jxC5d7HZyjB-J51MBLeBxe0UA/exec";
+
+  var enText = {
+    form_submit:"Send",
+    form_sending:"Sending…"
+  };
+  function t(key){
+    var lang = document.documentElement.getAttribute("lang") || "en";
+    if(lang !== "en" && translations[lang] && translations[lang][key] !== undefined) return translations[lang][key];
+    return enText[key];
+  }
+
+  var intakeForm = document.querySelector("form.intake");
+  var okBox = document.getElementById("formSuccess");
+  var errBox = document.getElementById("formError");
+  var sendBtn = intakeForm.querySelector('button[type="submit"]');
+
+  intakeForm.addEventListener("submit", function(e){
+    if(SCRIPT_URL.indexOf("PASTE-YOUR") !== -1) return; // not configured yet: normal FormSubmit post
+    e.preventDefault();
+    errBox.setAttribute("hidden","");
+    sendBtn.disabled = true;
+    sendBtn.textContent = t("form_sending");
+
+    fetch(SCRIPT_URL, { method:"POST", body:new FormData(intakeForm) })
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        if(j && j.result === "success"){
+          intakeForm.reset();
+          intakeForm.setAttribute("hidden","");
+          okBox.removeAttribute("hidden");
+          okBox.scrollIntoView({behavior:"smooth", block:"center"});
+        } else {
+          throw new Error("rejected");
+        }
+      })
+      .catch(function(){
+        errBox.removeAttribute("hidden");
+        errBox.scrollIntoView({behavior:"smooth", block:"center"});
+      })
+      .then(function(){
+        sendBtn.disabled = false;
+        sendBtn.textContent = t("form_submit");
+      });
   });
 })();
 </script>
